@@ -9,6 +9,7 @@ for p in $(cat projects.conf); do
    echo "====================================================================="
 
    pushd $p > /dev/null  # Silent pushd
+   chmod +x gradlew
    ./gradlew $@ testDebug nexusOneApi30DebugAndroidTest --info --no-watch-fs | sed "s@^@$p @"  # Prefix every line with directory
    code=${PIPESTATUS[0]}
    if [ "$code" -ne "0" ]; then
