@@ -1,0 +1,40 @@
+# Workflow name
+name: Compose Preview Screenshot
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set Up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '17'
+          distribution: 'graalvm' # Use the GraalVM distribution
+          components: 'js'        # Install the JS engine
+
+      - name: Generate HTML using GraalVM
+        working-directory: ui/PreviewScreenshot/app/src/main/java/com/example/compose/previewscreenshot/
+        run: |
+          js --jvm --polyglot generateHtml.js > generated.html
+          mkdir -p ${{ github.workspace }}/ui/PreviewScreenshot/app/src/main/res/raw
+          mv generated.html ${{ github.workspace }}/ui/PreviewScreenshot/app/src/main/res/raw/generated.html
+
+      - name: Build project and run screenshot tests
+        working-directory: ui/PreviewScreenshot
+        run: |
+          ./gradlew clean
+          ./gradlew updateDebugScreenshotTest
+          ./gradlew validateDebugScreenshotTest
+          ls -R .
+
+      - name: Upload Screenshot Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: .
