@@ -4,7 +4,7 @@ on:
   # When it will be triggered
   # And in which branch
   push:
-    branches: [ main ]
+    branches: [ main_ ]  # excluded
 
 jobs:
   build:
