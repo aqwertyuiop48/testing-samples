@@ -33,7 +33,9 @@ jobs:
         uses: android-actions/setup-android@v3
         
       - name: Build project and run local and device tests
-        run: ./test_all.sh
+        run: |
+         chmod +x test_all.sh
+         ./test_all.sh
 
       - name: Upload test reports
         if: always()

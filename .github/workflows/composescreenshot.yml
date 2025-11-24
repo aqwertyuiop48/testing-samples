@@ -28,6 +28,7 @@ jobs:
       - name: Build project and run screenshot tests
         working-directory: ui/PreviewScreenshot
         run: |
+          chmod +x gradlew
           ./gradlew clean
           ./gradlew updateDebugScreenshotTest
           ./gradlew validateDebugScreenshotTest
