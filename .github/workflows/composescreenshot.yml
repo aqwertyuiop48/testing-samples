@@ -18,15 +18,17 @@ jobs:
           java-version: '17'
           distribution: 'graalvm'
 
-      - name: Install GraalJS Standalone
+      - name: Install GraalJS Standalone (JVM version)
         run: |
-          curl -sL https://github.com/oracle/graaljs/releases/download/graal-24.1.2/graaljs-community-24.1.2-linux-amd64.tar.gz | tar -xz
-          echo "$PWD/graaljs-community-24.1.2-linux-amd64/bin" >> $GITHUB_PATH
+          mkdir graaljs
+          curl -sL https://github.com/oracle/graaljs/releases/download/graal-24.1.2/graaljs-community-jvm-24.1.2-linux-amd64.tar.gz | tar -xz -C graaljs --strip-components=1
+          echo "$PWD/graaljs/bin" >> $GITHUB_PATH
 
-      - name: Generate HTML using GraalVM
+      - name: Generate HTML using GraalJS
         working-directory: ui/PreviewScreenshot/app/src/main/java/com/example/compose/previewscreenshot/
         run: |
-          js --jvm --polyglot generateHtml.js > generated.html
+          # The --jvm flag is removed because this launcher is already JVM-based
+          js --polyglot generateHtml.js > generated.html
           mkdir -p ${{ github.workspace }}/ui/PreviewScreenshot/app/src/main/res/raw
           mv generated.html ${{ github.workspace }}/ui/PreviewScreenshot/app/src/main/res/raw/generated.html
 
