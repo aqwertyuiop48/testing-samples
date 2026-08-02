@@ -15,9 +15,10 @@ jobs:
       - name: Set Up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
+          version: '22.3.0'
           java-version: '17'
-          distribution: 'graalvm' # Use the GraalVM distribution
-          components: 'js'        # Install the JS engine
+          distribution: 'graalvm-community'
+          components: 'js'
 
       - name: Generate HTML using GraalVM
         working-directory: ui/PreviewScreenshot/app/src/main/java/com/example/compose/previewscreenshot/
